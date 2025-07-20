@@ -59,7 +59,7 @@ export default function Home() {
             <CardHeader className="border-b border-border/30 pb-6">
               <CardTitle className="text-2xl font-bold text-foreground">Ignite Your Idea</CardTitle>
               <CardDescription className="text-muted-foreground">
-                Unleash the full potential of your "next big thing" with AI-powered insights.
+                Unleash the full potential of your &quot;next big thing&quot; with AI-powered insights.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
