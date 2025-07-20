@@ -69,7 +69,7 @@ export default function Home() {
                 {mounted ? (
                   <Input
                     id="startup-name"
-                    placeholder='e.g., "Quantum Leap Innovations"'
+                    placeholder='e.g., &quot;Quantum Leap Innovations&quot;'
                     value={startupName}
                     onChange={(e) => setStartupName(e.target.value)}
                     required
