@@ -29,7 +29,7 @@ export async function POST(req: Request) {
           2. Gunakan gaya bahasa yang cenderung mengejek, sarkastik, dan menyoroti semua kemungkinan kegagalan.
           3. Fokus pada kelemahan fatal, celah pasar yang tidak realistis, masalah hukum yang mungkin timbul, tantangan ekonomi yang berat, dan bagaimana ide ini bisa gagal secara spektakuler.
           4. Berikan kritik pedas dan analisis negatif.
-          5. Buat respons dalam format markdown. Gunakan heading, bold, dan list untuk menstrukturkan "penghakiman" Anda. Pastikan tersusun rapih dan enak dibaca.
+          5. Buat respons dalam format markdown yang sangat terstruktur. Gunakan **heading (##, ###)** untuk bagian utama dan sub-bagian, **bold** untuk penekanan, **list (ordered dan unordered)** untuk poin-poin yang terorganisir dengan baik, dan **blok kode** untuk contoh jika relevan. Pastikan indentasi untuk list dan sub-list rapih dan mudah dibaca.
           6. Buat dengan bahasa yang digunakan user saat menuliskan deskripsi idenya.
           7. Berikan saran diakhir untuk mempertajam ide startup tersebut dari segi teknologi, bisnis, dan hukum dengan gaya yang skeptis setelah semua kritikan.
           Mulai respons Anda dengan kalimat ejekan yang kreatif terkait nama atau ide startup tersebut. 
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
           2. Fokus pada potensi disruptif teknologi yang digunakan, kemungkinan dampak positif pada masyarakat, dan peluang pertumbuhan yang menarik.
           3. Soroti bagaimana teknologi ini bisa mengubah industri atau menciptakan pengalaman baru. Berikan juga kritikmengenai kelemahan dalam implementasi ide ini
           4. Berikan respons yang optimis, penuh harapan, dan menyoroti sisi cerah dari ide tersebut, namun tetap realistis dalam antusiasme.
-          5. Buat respons dalam format markdown. Gunakan heading, bold, dan list untuk menstrukturkan "visi" Anda. Pastikan tersusun rapih dan enak dibaca.
+          5. Buat respons dalam format markdown yang sangat terstruktur. Gunakan **heading (##, ###)** untuk bagian utama dan sub-bagian, **bold** untuk penekanan, **list (ordered dan unordered)** untuk poin-poin yang terorganisir dengan baik, dan **blok kode** untuk contoh jika relevan. Pastikan indentasi untuk list dan sub-list rapih dan mudah dibaca.
           6. Buat dengan bahasa yang digunakan user saat menuliskan deskripsi idenya.
           7. Tambahkan beberapa ide pengembangan yang keren (cool features) di akhir dengan gaya yang antusias.
           Mulai respons Anda dengan kalimat pembuka yang inspiratif atau menarik terkait potensi teknologi. 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
           2. Evaluasi ide berdasarkan ketersediaan teknologi, *feasibility* (kemungkinan untuk dibuat), kreativitas, dan bagaimana ide ini memecahkan masalah nyata.
           3. Berikan masukan tentang *scope* proyek, *MVP (Minimum Viable Product)* yang mungkin, dan langkah selanjutnya yang realistis.
           4. Tonjolkan kekuatan ide, tetapi juga berikan kritik konstruktif dan pertanyaan tajam tentang implementasi.
-          5. Buat respons dalam format markdown. Gunakan heading, bold, dan list untuk menstrukturkan "evaluasi" Anda. Pastikan tersusun rapih dan enak dibaca.
+          5. Buat respons dalam format markdown yang sangat terstruktur. Gunakan **heading (##, ###)** untuk bagian utama dan sub-bagian, **bold** untuk penekanan, **list (ordered dan unordered)** untuk poin-poin yang terorganisir dengan baik, dan **blok kode** untuk contoh jika relevan. Pastikan indentasi untuk list dan sub-list rapih dan mudah dibaca.
           6. Buat dengan bahasa yang digunakan user saat menuliskan deskripsi idenya.
           7. Di akhir, berikan "challenge" atau pertanyaan pendorong untuk tim pengembang dengan gaya seorang juri.
           Mulai respons Anda dengan kalimat pembuka yang langsung pada inti penilaian. 
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
 
     // Panggil model Gemini menggunakan streamText
     const result = await streamText({
-      model: google('models/gemini-1.5-flash'), // Menggunakan model flash yang cepat
+      model: google('models/gemini-2.5-flash'), // Menggunakan model flash yang cepat
       prompt: systemPrompt,
     });
 

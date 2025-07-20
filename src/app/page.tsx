@@ -1,10 +1,10 @@
 // src/app/page.tsx
-'use client'; // Menandai komponen ini sebagai Client Component, karena menggunakan Hooks dan interaktivitas.
+'use client';
 
-import { useState } from 'react'; // Hook untuk mengelola state di React.
-import { useCompletion } from 'ai/react'; // Hook dari AI SDK untuk berinteraksi dengan API completion.
-import { marked } from 'marked'; // Library untuk mengonversi Markdown menjadi HTML.
-import { Button } from '@/components/ui/button'; // Mengimpor komponen Button dari UI library.
+import { useState, useEffect } from 'react'; // Impor useEffect
+import { useCompletion } from 'ai/react';
+import { marked } from 'marked';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,28 +12,28 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'; // Mengimpor komponen Card dari UI library.
-import { Input } from '@/components/ui/input'; // Mengimpor komponen Input dari UI library.
-import { Label } from '@/components/ui/label'; // Mengimpor komponen Label dari UI library.
-import { Textarea } from '@/components/ui/textarea'; // Mengimpor komponen Textarea dari UI library.
-import { Loader2, Sparkles, User, Brain, Code } from 'lucide-react'; // Mengimpor ikon dari Lucide React untuk tampilan yang lebih menarik.
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Sparkles, User, Brain, Code } from 'lucide-react';
 
 export default function Home() {
-  // State untuk menyimpan nama startup yang diinput oleh pengguna.
   const [startupName, setStartupName] = useState('');
-  // State untuk menyimpan persona analisis yang dipilih pengguna. Default ke 'skeptical-vc'.
   const [selectedPersona, setSelectedPersona] = useState('skeptical-vc');
+  const [mounted, setMounted] = useState(false); // State baru untuk melacak apakah komponen sudah mounted di klien
 
-  // useCompletion hook untuk mengelola interaksi dengan API.
-  // api: Menentukan endpoint API yang akan dipanggil.
-  // body: Data tambahan yang akan dikirim ke API bersama dengan 'prompt' (startupDescription).
-  //       selectedPersona disertakan agar API tahu persona mana yang harus digunakan.
+  // Effect hook untuk menandai komponen sebagai mounted setelah render pertama di klien
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const {
-    completion, // Hasil respons dari API.
-    input, // Input teks yang dikelola oleh hook (dalam kasus ini, startupDescription).
-    handleInputChange, // Handler untuk memperbarui 'input' saat pengguna mengetik.
-    handleSubmit, // Handler untuk mengirimkan formulir.
-    isLoading, // Boolean yang menunjukkan apakah permintaan API sedang berlangsung.
+    completion,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
   } = useCompletion({
     api: '/api/analyze',
     body: {
@@ -43,11 +43,8 @@ export default function Home() {
   });
 
   return (
-    // Kontainer utama halaman dengan gaya latar belakang gelap dan padding responsif.
     <div className="flex flex-col items-center min-h-screen bg-background dark p-4 sm:p-8">
-      {/* Kontainer untuk konten utama dengan lebar maksimum dan jarak antar elemen vertikal. */}
-      <div className="w-full max-w-3xl space-y-8">
-        {/* Header halaman dengan judul dan deskripsi yang menarik. */}
+      <div className="w-full max-w-5xl space-y-8">
         <header className="text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
             Startup Idea Forge
@@ -57,7 +54,6 @@ export default function Home() {
           </p>
         </header>
 
-        {/* Card untuk input ide startup. Disesuaikan untuk tampilan tech-savvy. */}
         <Card className="w-full bg-gradient-to-br from-card to-card/70 border border-border/50 shadow-lg shadow-primary/10 transition-all duration-300 hover:shadow-primary/20">
           <form onSubmit={handleSubmit}>
             <CardHeader className="border-b border-border/30 pb-6">
@@ -67,36 +63,56 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
-              {/* Input untuk nama startup */}
               <div className="space-y-2">
                 <Label htmlFor="startup-name">Startup Name</Label>
-                <Input
-                  id="startup-name"
-                  placeholder='e.g., "Quantum Leap Innovations"'
-                  value={startupName}
-                  onChange={(e) => setStartupName(e.target.value)}
-                  required
-                  className="bg-input/50 border-primary/20 focus-visible:border-primary/50"
-                />
+                {/* Render Input hanya jika komponen sudah mounted di klien */}
+                {mounted ? (
+                  <Input
+                    id="startup-name"
+                    placeholder='e.g., "Quantum Leap Innovations"'
+                    value={startupName}
+                    onChange={(e) => setStartupName(e.target.value)}
+                    required
+                    className="bg-input/50 border-primary/20 focus-visible:border-primary/50"
+                  />
+                ) : (
+                  // Placeholder untuk menghindari error hidrasi di server
+                  <input
+                    id="startup-name"
+                    placeholder='e.g., "Quantum Leap Innovations"'
+                    required
+                    className="bg-input/50 border-primary/20 focus-visible:border-primary/50"
+                    disabled // Menonaktifkan input sementara
+                  />
+                )}
               </div>
-              {/* Textarea untuk deskripsi startup */}
               <div className="space-y-2">
                 <Label htmlFor="startup-description">Description</Label>
-                <Textarea
-                  id="startup-description"
-                  value={input}
-                  onChange={handleInputChange}
-                  placeholder="Elaborate on your groundbreaking idea, target demographic, revolutionary business model, and competitive edge."
-                  className="min-h-[180px] bg-input/50 border-primary/20 focus-visible:border-primary/50"
-                  required
-                />
+                {/* Render Textarea hanya jika komponen sudah mounted di klien */}
+                {mounted ? (
+                  <Textarea
+                    id="startup-description"
+                    value={input}
+                    onChange={handleInputChange}
+                    placeholder="Elaborate on your groundbreaking idea, target demographic, revolutionary business model, and competitive edge."
+                    className="min-h-[180px] bg-input/50 border-primary/20 focus-visible:border-primary/50"
+                    required
+                  />
+                ) : (
+                  // Placeholder untuk menghindari error hidrasi di server
+                  <textarea
+                    id="startup-description"
+                    placeholder="Elaborate on your groundbreaking idea, target demographic, revolutionary business model, and competitive edge."
+                    className="min-h-[180px] bg-input/50 border-primary/20 focus-visible:border-primary/50"
+                    disabled // Menonaktifkan textarea sementara
+                  />
+                )}
               </div>
-              {/* Pilihan Persona (berjajar ke samping) */}
               <div className="space-y-2">
                 <Label>Choose AI Analyst Persona</Label>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
-                    type="button" // Penting: type="button" agar tidak mensubmit form.
+                    type="button"
                     variant={selectedPersona === 'skeptical-vc' ? 'default' : 'outline'}
                     onClick={() => setSelectedPersona('skeptical-vc')}
                     className="flex-1 min-w-0 py-2 sm:py-3 transition-all duration-200 ease-in-out transform hover:scale-105"
@@ -126,7 +142,6 @@ export default function Home() {
               </div>
             </CardContent>
             <CardFooter className="border-t border-border/30 pt-6">
-              {/* Tombol submit dengan indikator loading. */}
               <Button
                 type="submit"
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 ease-in-out transform hover:scale-[1.01]"
@@ -148,7 +163,6 @@ export default function Home() {
           </form>
         </Card>
 
-        {/* Card untuk menampilkan hasil analisis jika sudah ada. */}
         {completion && (
           <Card className="w-full bg-gradient-to-br from-background to-card/50 border border-border/50 shadow-lg shadow-purple-500/10">
             <CardHeader className="border-b border-border/30 pb-6">
@@ -157,9 +171,12 @@ export default function Home() {
                 A deep dive into your idea from the selected perspective.
               </CardDescription>
             </CardHeader>
-            <CardContent className="prose prose-slate dark:prose-invert max-w-none pt-6">
+            <CardContent className="prose prose-slate dark:prose-invert max-w-full"> {/* Perhatikan perubahan di sini */}
               {/* Menampilkan hasil analisis dalam format HTML setelah dikonversi dari Markdown. */}
-              <div dangerouslySetInnerHTML={{ __html: marked.parse(completion) as string }} />
+              <div
+                className="max-w-full overflow-x-auto" // Tambahkan kelas ini
+                dangerouslySetInnerHTML={{ __html: marked.parse(completion) as string }}
+              />
             </CardContent>
           </Card>
         )}
